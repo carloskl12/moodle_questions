@@ -1,9 +1,5 @@
-import sys, os
+import os
 import inspect #para los nombres de las funciones
-#adjust the package
-#mylibsdirs=os.path.join(os.path.expanduser("~"),'Dropbox/python/jkPyLaTeX')
-#sys.path.insert(0,mylibsdirs)
-#from jkMath import MathSet
 
 from src import Ejercicio, creaCategoria, TIPOS
 #from sympy import symbols, factor, cancel, latex
