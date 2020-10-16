@@ -14,7 +14,8 @@ numPreguntas=0
 
 def preguntaSumaFracciones():
   '''
-  a/b+c/d
+  
+  a/b+c/b
   a,b,c primos
   
   frac1=(a.f)/(b.f)
@@ -60,7 +61,11 @@ print('mi nombre es:',myName)
 dirSave=os.path.join('gift',myName+'.gift')
 with open(dirSave, 'w') as f:
   s=''
-  s+=creaCategoria('Parcial1/union')
+  s+=creaCategoria('Test/ejemplo')
+  s+=preguntaSumaFracciones()()
+  s+=preguntaSumaFracciones()()
+  s+=creaCategoria('Test/ejemplo2')
+  s+=preguntaSumaFracciones()()
   s+=preguntaSumaFracciones()()
   print('Numero de preguntas:',numPreguntas)
   f.write(s)

@@ -1,8 +1,8 @@
 
-$CATEGORY: Parcial1/union
+$CATEGORY: Test/ejemplo
 
 ::Problema fracciones::
-Si se requiere obtener el resultado de \( \frac\{2\}\{5\} + \frac\{14\}\{10\} \) , para poderse operar, la fracción \( \frac\{14\}\{10\} \) puede simplificarse para:
+Si se requiere obtener el resultado de \( \frac\{4\}\{14\} + \frac\{5\}\{7\} \) , para poderse operar, la fracción \( \frac\{4\}\{14\} \) puede simplificarse para:
 {
   =2
   ~3
@@ -13,7 +13,7 @@ Si se requiere obtener el resultado de \( \frac\{2\}\{5\} + \frac\{14\}\{10\} \)
 }
 
 ::Problema fracciones::
-Si se requiere obtener el resultado de \( \frac\{21\}\{9\} - \frac\{2\}\{3\} \) , para poderse operar, la fracción \( \frac\{21\}\{9\} \) puede simplificarse para:
+Si se requiere obtener el resultado de \( \frac\{2\}\{3\} - \frac\{21\}\{9\} \) , para poderse operar, la fracción \( \frac\{21\}\{9\} \) puede simplificarse para:
 {
   =3
   ~4
@@ -24,7 +24,7 @@ Si se requiere obtener el resultado de \( \frac\{21\}\{9\} - \frac\{2\}\{3\} \) 
 }
 
 ::Problema fracciones::
-Si se requiere obtener el resultado de \( \frac\{12\}\{8\} + \frac\{7\}\{2\} \) , para poderse operar, la fracción \( \frac\{12\}\{8\} \) puede simplificarse para:
+Si se requiere obtener el resultado de \( \frac\{12\}\{8\} + \frac\{5\}\{2\} \) , para poderse operar, la fracción \( \frac\{12\}\{8\} \) puede simplificarse para:
 {
   =4
   ~5
@@ -35,7 +35,7 @@ Si se requiere obtener el resultado de \( \frac\{12\}\{8\} + \frac\{7\}\{2\} \) 
 }
 
 ::Problema fracciones::
-Si se requiere obtener el resultado de \( \frac\{3\}\{5\} - \frac\{10\}\{25\} \) , para poderse operar, la fracción \( \frac\{10\}\{25\} \) puede simplificarse para:
+Si se requiere obtener el resultado de \( \frac\{35\}\{25\} - \frac\{3\}\{5\} \) , para poderse operar, la fracción \( \frac\{35\}\{25\} \) puede simplificarse para:
 {
   =5
   ~6
@@ -46,7 +46,7 @@ Si se requiere obtener el resultado de \( \frac\{3\}\{5\} - \frac\{10\}\{25\} \)
 }
 
 ::Problema fracciones::
-Si se requiere obtener el resultado de \( \frac\{30\}\{12\} + \frac\{3\}\{2\} \) , para poderse operar, la fracción \( \frac\{30\}\{12\} \) puede simplificarse para:
+Si se requiere obtener el resultado de \( \frac\{42\}\{18\} + \frac\{2\}\{3\} \) , para poderse operar, la fracción \( \frac\{42\}\{18\} \) puede simplificarse para:
 {
   =6
   ~7
@@ -57,7 +57,210 @@ Si se requiere obtener el resultado de \( \frac\{30\}\{12\} + \frac\{3\}\{2\} \)
 }
 
 ::Problema fracciones::
-Si se requiere obtener el resultado de \( \frac\{3\}\{2\} - \frac\{49\}\{14\} \) , para poderse operar, la fracción \( \frac\{49\}\{14\} \) puede simplificarse para:
+Si se requiere obtener el resultado de \( \frac\{14\}\{21\} - \frac\{7\}\{3\} \) , para poderse operar, la fracción \( \frac\{14\}\{21\} \) puede simplificarse para:
+{
+  =7
+  ~2
+  ~3
+  ~4
+  ~5
+  ~6
+}
+
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{10\}\{14\} + \frac\{2\}\{7\} \) , para poderse operar, la fracción \( \frac\{10\}\{14\} \) puede simplificarse para:
+{
+  =2
+  ~3
+  ~4
+  ~5
+  ~6
+  ~7
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{6\}\{21\} - \frac\{3\}\{7\} \) , para poderse operar, la fracción \( \frac\{6\}\{21\} \) puede simplificarse para:
+{
+  =3
+  ~4
+  ~5
+  ~6
+  ~7
+  ~2
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{20\}\{28\} + \frac\{3\}\{7\} \) , para poderse operar, la fracción \( \frac\{20\}\{28\} \) puede simplificarse para:
+{
+  =4
+  ~5
+  ~6
+  ~7
+  ~2
+  ~3
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{35\}\{25\} - \frac\{3\}\{5\} \) , para poderse operar, la fracción \( \frac\{35\}\{25\} \) puede simplificarse para:
+{
+  =5
+  ~6
+  ~7
+  ~2
+  ~3
+  ~4
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{7\}\{2\} + \frac\{30\}\{12\} \) , para poderse operar, la fracción \( \frac\{30\}\{12\} \) puede simplificarse para:
+{
+  =6
+  ~7
+  ~2
+  ~3
+  ~4
+  ~5
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{3\}\{7\} - \frac\{35\}\{49\} \) , para poderse operar, la fracción \( \frac\{35\}\{49\} \) puede simplificarse para:
+{
+  =7
+  ~2
+  ~3
+  ~4
+  ~5
+  ~6
+}
+
+
+$CATEGORY: Test/ejemplo2
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{14\}\{6\} + \frac\{5\}\{3\} \) , para poderse operar, la fracción \( \frac\{14\}\{6\} \) puede simplificarse para:
+{
+  =2
+  ~3
+  ~4
+  ~5
+  ~6
+  ~7
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{21\}\{6\} - \frac\{5\}\{2\} \) , para poderse operar, la fracción \( \frac\{21\}\{6\} \) puede simplificarse para:
+{
+  =3
+  ~4
+  ~5
+  ~6
+  ~7
+  ~2
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{12\}\{20\} + \frac\{7\}\{5\} \) , para poderse operar, la fracción \( \frac\{12\}\{20\} \) puede simplificarse para:
+{
+  =4
+  ~5
+  ~6
+  ~7
+  ~2
+  ~3
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{2\}\{3\} - \frac\{35\}\{15\} \) , para poderse operar, la fracción \( \frac\{35\}\{15\} \) puede simplificarse para:
+{
+  =5
+  ~6
+  ~7
+  ~2
+  ~3
+  ~4
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{42\}\{30\} + \frac\{3\}\{5\} \) , para poderse operar, la fracción \( \frac\{42\}\{30\} \) puede simplificarse para:
+{
+  =6
+  ~7
+  ~2
+  ~3
+  ~4
+  ~5
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{3\}\{7\} - \frac\{35\}\{49\} \) , para poderse operar, la fracción \( \frac\{35\}\{49\} \) puede simplificarse para:
+{
+  =7
+  ~2
+  ~3
+  ~4
+  ~5
+  ~6
+}
+
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{7\}\{2\} + \frac\{6\}\{4\} \) , para poderse operar, la fracción \( \frac\{6\}\{4\} \) puede simplificarse para:
+{
+  =2
+  ~3
+  ~4
+  ~5
+  ~6
+  ~7
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{6\}\{15\} - \frac\{3\}\{5\} \) , para poderse operar, la fracción \( \frac\{6\}\{15\} \) puede simplificarse para:
+{
+  =3
+  ~4
+  ~5
+  ~6
+  ~7
+  ~2
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{3\}\{2\} + \frac\{20\}\{8\} \) , para poderse operar, la fracción \( \frac\{20\}\{8\} \) puede simplificarse para:
+{
+  =4
+  ~5
+  ~6
+  ~7
+  ~2
+  ~3
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{3\}\{7\} - \frac\{25\}\{35\} \) , para poderse operar, la fracción \( \frac\{25\}\{35\} \) puede simplificarse para:
+{
+  =5
+  ~6
+  ~7
+  ~2
+  ~3
+  ~4
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{30\}\{42\} + \frac\{2\}\{7\} \) , para poderse operar, la fracción \( \frac\{30\}\{42\} \) puede simplificarse para:
+{
+  =6
+  ~7
+  ~2
+  ~3
+  ~4
+  ~5
+}
+
+::Problema fracciones::
+Si se requiere obtener el resultado de \( \frac\{3\}\{7\} - \frac\{35\}\{49\} \) , para poderse operar, la fracción \( \frac\{35\}\{49\} \) puede simplificarse para:
 {
   =7
   ~2
