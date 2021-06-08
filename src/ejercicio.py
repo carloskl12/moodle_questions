@@ -75,7 +75,7 @@ class Ejercicio (object):
             s+='  =%s\n'%respuestas[0]
             for rta in respuestas[1:]:
                 s+='  ~%s\n'%rta
-                s+='}\n'
+            s+='}\n'
         elif self.tipo==1:
             # Completar
             en=enunciado
