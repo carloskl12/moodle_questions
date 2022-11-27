@@ -5,10 +5,10 @@ __pycache__/
 #Ficheros temporales
 *~
 
-./gift/
+/gift/
 #no ignorar
-!./gift/test.gift
+!/gift/test.gift
 
 # scripts de ejercicios inician con prefijo ej
 # en el directorio raiz
-./ej*.py
+/ej*.py
