@@ -5,6 +5,7 @@ __pycache__/
 #Ficheros temporales
 *~
 
+/privado/
 /gift/
 #no ignorar
 !/gift/test.gift
