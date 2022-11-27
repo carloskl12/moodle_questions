@@ -40,8 +40,10 @@ def creaEjercicioFV(enunciado,verdadero, categoria='ejercicio'):
     s+='{F}\n'
   return s
 
+
+
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-def generaPol(grado, ordenado=False, nt=4):
+def generaPol(grado, ordenado=False, nt=4, coef=None):
   '''
   Genera un polinomio de un grado particular
   con coeficientes aleatorios, y términos
@@ -56,12 +58,13 @@ def generaPol(grado, ordenado=False, nt=4):
     shuffle(tmp)
     expo= [expo[-1]]+tmp[:nt-1]
   
-  coef=[]
-  for n in expo:
-    coef.append(randint(2,9))
-  coef+=[-c for c in coef]
-  shuffle(coef)
-  shuffle(expo)
+  if coef == None:
+    coef=[]
+    for n in expo:
+      coef.append(randint(2,9))
+      coef+=[-c for c in coef]
+    shuffle(coef)
+    shuffle(expo)
   pol=''
   i=0
   for c, n in zip(coef,expo[:len(coef)]):
@@ -79,3 +82,7 @@ def generaPol(grado, ordenado=False, nt=4):
       pol+=' '
     i+=1
   return pol
+
+
+
+
