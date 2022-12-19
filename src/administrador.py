@@ -111,7 +111,7 @@ class Administrador(object):
         self.s += ejercicio(opciones, total, offsetIndice)
         
         maxNumPreguntas = len(ejercicio.preguntas)
-        if total == -1:
+        if total == -1 or total > maxNumPreguntas:
             total = maxNumPreguntas
         
         # actualiza el número de preguntas en la categoría actual
