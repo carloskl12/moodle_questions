@@ -72,8 +72,8 @@ class Ejercicio (object):
         if len(variante) > self.nArgsV:
             raise Exception('La cantidad de argumentos es incorrecta para generar el enunciado')
         s = self.enunciado
-        if self.tipo == 2: # emparejar
-            return s
+        #if self.tipo == 2: # emparejar
+        #    return s
         for i, v in enumerate(variante):
             s = s.replace('@v%i'%(i+1), v )#Se quitó la finalización con espacio
         return s
