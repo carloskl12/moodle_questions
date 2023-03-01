@@ -1,5 +1,4 @@
 
-
 TIPOS= { 'selección múltiple': 0, 
     'completar': 1, 
     'emparejar': 2, 
@@ -171,7 +170,8 @@ class Ejercicio (object):
                 
         elif self.tipo == 2: #emparejar
             for i in range(np):
-                enunciado = self.Enunciado([])
+                variante = self.preguntas[i]['variante']
+                enunciado = self.Enunciado(variante)
                 respuestas = self.preguntas[i]['respuesta'] # lista de opciones
                 s += self.Respuesta(enunciado, respuestas,i)+'\n'
         elif self.tipo == 3: #verdadero falso
