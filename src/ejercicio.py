@@ -44,6 +44,8 @@ class Ejercicio (object):
         self.nArgsC = 0
         if tipo == 1:
             self.nArgsC = enunciado.count('@c')
+            if self.nArgsC > 1:
+                raise Exception("Solo se puede indicar un valor para completar")
 
     def CorrigeFormato(self, s):
         '''
@@ -95,20 +97,13 @@ class Ejercicio (object):
             s += '}\n'
         elif self.tipo == 1: #completar
             # Completar
-            if len(respuestas) != self.nArgsC:
-                se="El número de valores a completar no coincide:"
-                se+=" se esperaban %i campos y se tienen %i."%(self.nArgsC, len(respuestas))
-                print(respuestas, len(respuestas))
-                raise Exception(se)
+            if  self.nArgsC != 1:
+                raise Exception("No se halló la ubicación a completar")
             en = enunciado
+            sc = "" #campo de la respuesta 
             for i, rta in enumerate(respuestas):
-                sc = "" #campo de la respuesta 
-                if isinstance( rta, (list, tuple)):
-                    for v in rta:
-                        sc+="=%s "%str(v)
-                else:
-                    sc = "=%s "%str(rta)
-                en = en.replace('@c%i'%(i+1), '{ %s }'%sc )
+                sc+="=%s "%str(rta)
+            en = en.replace('@c1', '{ %s }'%sc )
             s += en+"\n"
         
         elif self.tipo == 2: #emparejar
