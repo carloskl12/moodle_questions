@@ -88,6 +88,8 @@ class Ejercicio (object):
         s = '::%s_%i::\n'%(self.grupo,iPregunta+self.offsetIndice+1)
 
         if self.tipo in (0,4):
+            
+            
             # Selección múltiple con única respuesta
             s += enunciado+'\n'
             s += '{\n'
@@ -95,6 +97,17 @@ class Ejercicio (object):
             for rta in respuestas[1:]:
                 s += '  ~%s\n'%rta
             s += '}\n'
+            
+            # valida que no hayan respuestas repetidas
+            unicos = []
+            for i, r in enumerate(respuestas):
+                if r not in unicos:
+                    unicos.append(r)
+                else:
+                    se = "La opción %i repetida:\n    %s"%(i+1,str(r))
+                    se += "\n    en: "+s
+                    raise Exception(se)
+            
         elif self.tipo == 1: #completar
             # Completar
             if  self.nArgsC != 1:
