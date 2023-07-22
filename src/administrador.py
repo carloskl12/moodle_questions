@@ -5,13 +5,17 @@ from shutil import copyfile
 # Se especifica el directorio o carpeta donde se guardarán los resultados
 GIFT_DIR = "./gift"
 
+from .ejercicio import Ejercicio, EjercicioXML
+import xml.etree.ElementTree as ET
+
 #%%%%%%%%%%%%%%%%%
 class Administrador(object):
     '''
     Clase para administrar la información de las preguntas
     '''
     
-    def __init__(self, preguntas=True,posibilidades=True, categorias=True ,media=False):
+    def __init__(self, formato='xml', preguntas=True,
+        posibilidades=True, categorias=True ,media=False):
         '''
         preguntas: indica si se muestra el total de preguntas que se 
             van generando
@@ -22,7 +26,9 @@ class Administrador(object):
             sonido, u otros recursos externos que se pueden agregar 
             dentro de las preguntas.
         '''
-        
+        if formato not in ('gift', 'xml'):
+            raise Exception("Formato no válido")
+        self.formato = formato
         self.preguntas = preguntas
         self.posibilidades = posibilidades #imprime el número de posibles preguntas
         self.categorias = categorias #indica si se muestran las categorías
@@ -34,10 +40,16 @@ class Administrador(object):
         self.nPreguntas = 0
         # número de preguntas máximas que se pueden generar
         self.nPosibles = 0
-        self.media = media
         # Cadena del resultado que se va generando
         self.s=""
         
+        if formato == "xml":
+            self.s = '<?xml version="1.0" ?><quiz>'
+            # Agrega el formato por defecto
+            info = ET.Element('info')
+            info.set('format', "moodle_auto_format")
+            text = ET.SubElement(info,'text')
+            self.s +='\n'+ET.tostring( info, encoding="unicode")
         
         #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         # Obtiene el nombre del archivo desde el que 
@@ -50,18 +62,9 @@ class Administrador(object):
         myPyName = os.path.basename(filename)
         myName = myPyName.replace('.py','')
         print('Nombre del proyecto:',myName)
+        print('**Formato:',formato)
         self.nombre =  myName
-        self.dicRecursos = {}
-        self.projectDir = ''
-        if self.media :
-            # Verifica si existe la carpeta donde se guarda
-            # el resultado, de no existir la crea
-            if not os.path.exists(GIFT_DIR):
-                os.mkdir(GIFT_DIR)
-            self.projectDir = os.path.join(GIFT_DIR,f'{self.nombre}')
-            if not os.path.exists(self.projectDir):
-                os.mkdir(self.projectDir)
-                print("Directorio creado:", self.projectDir)
+
 
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     def CreaCategoria(self,categoria):
@@ -79,8 +82,17 @@ class Administrador(object):
                 # Muestra el total de preguntas en la categoría anterior
                 print('  Total de preguntas en la categoría "%s":'%categoriaOld, total)
         
-        
-        self.s+="\n$CATEGORY: %s\n"%categoria
+        if self.formato == 'gift':
+            self.s+="\n$CATEGORY: %s\n"%categoria
+        elif self.formato == 'xml':
+            nd = ET.Element('question')
+            nd.set("type","category")
+            ndCategory = ET.SubElement(nd,'category')
+            txtCategory = ET.SubElement(ndCategory,'text')
+            txtCategory.text = "$course$/top/"+categoria
+            self.s+= ET.tostring(nd,encoding="unicode")
+            
+            
         # Almacena en la lista la categoría en la forma nombre, número de preguntas
         # generadas, y número máximo de preguntas diferentes que se pueden generar
         # al inicio se crean la categoría nada mas
@@ -108,6 +120,13 @@ class Administrador(object):
         categoria , totalPrevias, posibilidades = self.ltCategorias[-1]
         offsetIndice = self.nPreguntas + totalPrevias
         
+        if self.formato != ejercicio.formato:
+            if self.formato == 'gift':
+                ejercicio = Ejercicio(ejercicio=ejercicio)
+                print("  Warning: Considere tener los ejercicios en el formato gift")
+            elif self.formato == 'xml':
+                ejercicio = EjercicioXML(ejercicio=ejercicio)
+                print("  Warning: Considere tener los ejercicios en el formato xml")
         self.s += ejercicio(opciones, total, offsetIndice)
         
         maxNumPreguntas = len(ejercicio.preguntas)
@@ -141,25 +160,26 @@ class Administrador(object):
         if self.preguntas:
             print('  ** Total de preguntas generadas:',self.nPreguntas)
         
+        # Cierra el tag si está en formato xml
+        if self.formato == 'xml':
+            self.s+= "</quiz>"
+        
+        
         # Si no existe la carpeta para almacenar el resultado se
         # crea automáticamente
         if not os.path.exists(GIFT_DIR):
             os.mkdir(GIFT_DIR)
         
-        if self.media :
-            # Utilizando archivos multimedia se deben copiar las 
-            # fotos o sonidos en la misma carpeta del archivo gift
-            # que se genera
-            dirSave = os.path.join(self.projectDir, self.nombre+'.gift')
-            
-        else:
-            # Archivo normal
-            dirSave = os.path.join(GIFT_DIR, self.nombre+'.gift')
+        dirSave = os.path.join(GIFT_DIR, self.nombre+'.'+self.formato)
         with open(dirSave,'w') as f:
             f.write(self.s)
+    
+    
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%        
     def AgregarRecursoMultimedia(self, archivo , imagen = False, audio = False ):
             '''
+            No válido, se mantiene por posibilidad de utilizarse luego
+            
             Registra un archivo que se utilizará dentro de las preguntas, verifica su 
             tipo y genera el código del mismo para que se pueda agregar a las 
             preguntas.
