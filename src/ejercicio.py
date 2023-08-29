@@ -69,9 +69,11 @@ class Ejercicio (object):
             
         if not isinstance(s,str):
             return str(s)
-        sn = s.replace('{','\{')
-        sn = sn.replace('}','\}')
+        sn = s
         if self.formato == 'gift':
+            sn = s.replace('{','\{')
+            sn = sn.replace('}','\}')
+        
             sn = sn.replace('=','\=')
         return sn
     @property
@@ -89,7 +91,7 @@ class Ejercicio (object):
         if not isinstance( variante,(list,tuple)):
             raise Exception(' El formato de variante es inadecuado, debe ser una lista o tupla')
         if len(variante) > self.nArgsV:
-            raise Exception('La cantidad de argumentos es incorrecta para generar el enunciado')
+            raise Exception(f'La cantidad de argumentos es incorrecta para generar el enunciado: se esperaban {self.nArgsV} variantes, pero se tienen {len(variante)}')
         s = self.enunciado
         #if self.tipo == 2: # emparejar
         #    return s
@@ -98,7 +100,7 @@ class Ejercicio (object):
         return s
 
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    def Respuesta(self,enunciado, respuestas, iPregunta):
+    def Respuesta(self,enunciado, respuestas, iPregunta, feedback = None):
         '''
         Ajusta el enunciado con las respuestas,
         donde la primera es la respuesta correcta
@@ -192,7 +194,8 @@ class Ejercicio (object):
                 variante = self.preguntas[i]['variante']
                 enunciado = self.Enunciado(variante)
                 respuestas = self.preguntas[i]['respuesta'] # lista de opciones
-                s += self.Respuesta(enunciado, respuestas,i)+'\n'
+                feedback = self.preguntas[i].get('feedback',None)
+                s += self.Respuesta(enunciado, respuestas,i,feedback)+'\n'
 
         return s
 
@@ -242,15 +245,17 @@ class EjercicioXML(Ejercicio):
     
     
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    def Respuesta(self,enunciado, respuestas, iPregunta):
+    def Respuesta(self,enunciado, respuestas, iPregunta, feedback = None):
         '''
         Ajusta el enunciado con las respuestas,
         donde la primera es la respuesta correcta,
         retorna un nodo de respuesta
         '''
-        # Ajustes de texto
-        #enunciado = self.AjusteFormatoParaTextoXML(enunciado)
-        #respuestas = self.AjusteRespuestas(respuestas)
+        
+        if feedback != None and len(feedback) == len(respuestas):
+            pass
+        else:
+            feedback = None
         
         TIPOS_XML = {
             0: "multichoice", 
@@ -282,11 +287,16 @@ class EjercicioXML(Ejercicio):
             rOk = ET.SubElement(nd, 'answer')
             rOk.set('fraction',  "100")
             self.AppendElement(rOk, 'text',  respuestas[0])
-            
-            for rta in respuestas[1:]:
+            if feedback:
+                f = ET.SubElement(rOk, 'feedback')
+                self.AppendElement(f, 'text',  feedback[0])
+            for i, rta in enumerate(respuestas[1:]):
                 ri = ET.SubElement(nd, 'answer')
                 ri.set('fraction',  "0")
                 self.AppendElement(ri, 'text',  rta)
+                if feedback:
+                    f = ET.SubElement(ri, 'feedback')
+                    self.AppendElement(f, 'text',  feedback[i+1])
 
             # Indica que se barajan las respuestas
             self.AppendElement(nd, "shuffleanswers", value = "1")
