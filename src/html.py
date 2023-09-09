@@ -42,6 +42,8 @@ class HtmlCanvas:
                 for a in args:
                     if isinstance(a, str):
                         a = f'"{a}"'
+                    elif isinstance(a,float):
+                        a = f'{a:.2f}'
                     else:
                         a = str(a)
                     nargs.append(a)

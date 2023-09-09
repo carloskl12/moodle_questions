@@ -4,6 +4,7 @@ TIPOS= { 'selección múltiple': 0,
     'emparejar': 2, 
     'verdadero falso': 3,
     'opciones específicas': 4,
+    'múltiples respuestas':5
 }
 
 
@@ -64,7 +65,7 @@ class Ejercicio (object):
         Ajusta el formato latex para que funcione sin problemas en moodle
         '''
         #sn=s.replace('\\{','\\\\')
-        if  self.tipo in (0,1,2,4) and isinstance(s, (list, tuple)):
+        if  self.tipo in (0,1,2,4,5) and isinstance(s, (list, tuple)):
             return [self.CorrigeFormato(v) for v in s]
             
         if not isinstance(s,str):
@@ -150,7 +151,8 @@ class Ejercicio (object):
             if respuestas[0] not in 'TF':
                 raise Exception('La respuesta debe ser True o False')
             s += enunciado + "{%s}\n"%respuestas[0] 
-        
+        else:
+            raise Exception(f'El tipo especificado "{self.tipo}" no está implementado')
         
 
         return s
@@ -159,7 +161,7 @@ class Ejercicio (object):
     def __call__(self,o = 6, total = -1, offsetIndice = -1):
         '''
         Genera un string de las preguntas según los parámetros:
-        o: número de opciones si es una pregunta de seleeción múltiple
+        o: número de opciones si es una pregunta de selección múltiple
         total: cantidad de preguntas, si es -1 se toma la cantidad máxima
         offsetIndice: indica un offset para numerar las preguntas
         '''
@@ -189,14 +191,16 @@ class Ejercicio (object):
                 enunciado = self.Enunciado(variante)
                 respuestas = [ preg['respuesta'] for preg in preguntas[i:i+o] ]
                 s += self.Respuesta(enunciado, respuestas,i)+'\n'
-        elif self.tipo in (1,2,3,4): #completar
+        elif self.tipo in (1,2,3,4,5): #completar
             for i in range(np):
                 variante = self.preguntas[i]['variante']
                 enunciado = self.Enunciado(variante)
                 respuestas = self.preguntas[i]['respuesta'] # lista de opciones
+                puntos = self.preguntas[i].get( 'puntos', None)
                 feedback = self.preguntas[i].get('feedback',None)
-                s += self.Respuesta(enunciado, respuestas,i,feedback)+'\n'
-
+                s += self.Respuesta(enunciado, respuestas,i,feedback, puntos)+'\n'
+        else:
+            raise Exception(f'El tipo especificado "{self.tipo}" no está implementado')
         return s
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -226,6 +230,7 @@ class EjercicioXML(Ejercicio):
             if isinstance(value, str):
                 newElement.text = value
             else:
+                print(value)
                 raise Exception("Se esperaba una cadena de caracteres para textValue")
         if attribute != None:
             if isinstance(attribute, dict):
@@ -245,11 +250,14 @@ class EjercicioXML(Ejercicio):
     
     
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    def Respuesta(self,enunciado, respuestas, iPregunta, feedback = None):
+    def Respuesta(self,enunciado, respuestas, iPregunta, feedback = None, puntos=None):
         '''
         Ajusta el enunciado con las respuestas,
         donde la primera es la respuesta correcta,
         retorna un nodo de respuesta
+        
+        puntos: indica los puntos que tiene cada respuesta en los casos que 
+        lo requiere
         '''
         
         if feedback != None and len(feedback) == len(respuestas):
@@ -262,7 +270,8 @@ class EjercicioXML(Ejercicio):
             1: "shortanswer", 
             2: "matching", 
             3: "truefalse",
-            4: "multichoice", 
+            4: "multichoice",
+            5: "multichoice"
         }
         
         nd = ET.Element('question')
@@ -273,42 +282,83 @@ class EjercicioXML(Ejercicio):
         nombre = ET.SubElement(nd, 'name')
         txtNombre = ET.SubElement(nombre,'text')
         txtNombre.text = '%s_%i'%(self.grupo,iPregunta+self.offsetIndice+1)
-        
-        if self.tipo in (0,4):
-            
+        if self.tipo in (0,4,5):
+            #print("*pregunta tipo:", self.tipo)
             # Se indica el enunciado
             qtext = ET.SubElement(nd, 'questiontext')
             qtext.set('format',"moodle_auto_format")
             self.AppendElement(qtext, 'text', enunciado)
             
+            if self.tipo == 5:
+                self.AppendElement(nd,'defaultgrade', value = "1.0")
+                self.AppendElement(nd,'penalty', value = "1.0")
             
-            # Se agregan las opciones
-            # la primera siempre es la correcta
-            rOk = ET.SubElement(nd, 'answer')
-            rOk.set('fraction',  "100")
-            self.AppendElement(rOk, 'text',  respuestas[0])
-            if feedback:
-                f = ET.SubElement(rOk, 'feedback')
-                self.AppendElement(f, 'text',  feedback[0])
-            for i, rta in enumerate(respuestas[1:]):
-                ri = ET.SubElement(nd, 'answer')
-                ri.set('fraction',  "0")
-                self.AppendElement(ri, 'text',  rta)
-                if feedback:
-                    f = ET.SubElement(ri, 'feedback')
-                    self.AppendElement(f, 'text',  feedback[i+1])
-
             # Indica que se barajan las respuestas
             self.AppendElement(nd, "shuffleanswers", value = "1")
 
-            # Indica que hay una sola respuesta
-            self.AppendElement(nd, "single", value = "true")
+            # Indica si hay una sola respuesta o varias
+            if self.tipo == 5:
+                self.AppendElement(nd, "single", value = "false")
+            else:
+                self.AppendElement(nd, "single", value = "true")
             
             # Tipo de numeración
             self.AppendElement(nd, "answernumbering", value = "abc")
             
             # Indica que no se muestre la instrucción por defecto "seleccione una:"
             self.AppendElement(nd, "showstandardinstruction", value = "0")
+            
+            # Se agregan las opciones
+            
+            # Se obtienen los puntos asociados a cada respuesta
+            if puntos == None:
+                if self.tipo == 5:
+                    raise Exception('Para múltiples respuestas se debe dar '+
+                    'la puntuación de cada respuesta')
+                puntos = [ 0 ]* len(respuestas)
+                # La primera opción siempre es la correcta
+                puntos[0] = 100
+            
+            if len(puntos) != len(respuestas):
+                raise Exception("Los puntos no coinciden con las respuestas:"+
+                f'\n  puntos:{len(puntos)}\n'+
+                f'\n  respuestas:{len(respuestas)}\n'
+                )
+            
+            
+            if self.tipo == 5:
+                total = sum([v for v in puntos if v>0])
+                if abs( total - 100) > 0.00015 :
+                    raise Exception(f'Los puntos no suman 100, suman: {total}')
+                for vr in puntos:
+                    v = abs(vr)
+                    if isinstance(v,int):
+                        venteros = (0,5,10,20,25,30,40, 50, 60, 70, 75,80,90,100)
+                        if v not in venteros:
+                            raise Exception(" La puntuacion debe ser un entero"+
+                            " válido de:"+str(venteros))
+                    if isinstance(v,float):
+                        vfloats = (11.11111, 12.5, 14.28571, 
+                        16.66667, 33.33333, 66.66667, 83.33333 )
+                        existe = False
+                        for vv in vfloats:
+                            if abs(v - vv)<0.0001:
+                                existe = True
+                                break
+                        if not existe:
+                            raise Exception(" La puntuacion flotante estar"+
+                            " en:"+str(vfloats))
+            
+            
+            for i, rta in enumerate(respuestas):
+                ri = ET.SubElement(nd, 'answer')
+                ri.set('fraction',  str(puntos[i]))
+                self.AppendElement(ri, 'text',  rta)
+                if feedback:
+                    f = ET.SubElement(ri, 'feedback')
+                    self.AppendElement(f, 'text',  feedback[i])
+
+            
             
             # valida que no hayan respuestas repetidas
             unicos = []
