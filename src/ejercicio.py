@@ -4,7 +4,8 @@ TIPOS= { 'selección múltiple': 0,
     'emparejar': 2, 
     'verdadero falso': 3,
     'opciones específicas': 4,
-    'múltiples respuestas':5
+    'múltiples respuestas':5,
+    'preguntas anidadas':6,
 }
 
 
@@ -33,7 +34,7 @@ class Ejercicio (object):
             self.enunciado = ejercicio.enunciado
             self.preguntas = ejercicio.preguntas
             self.grupo = ejercicio.grupo 
-            self.tipo = ejercicio. tipo
+            self.tipo = ejercicio.tipo
             self.nArgsV = ejercicio.nArgsV
             self.nArgsC = ejercicio.nArgsC
             self.offsetIndice = ejercicio.offsetIndice
@@ -46,8 +47,9 @@ class Ejercicio (object):
                 var = preguntas[i]['variante']
                 var = [self.CorrigeFormato(str(v)) for v in var]
                 preguntas[i]['variante'] = var
-                rta = preguntas[i]['respuesta']
-                preguntas[i]['respuesta'] = self.CorrigeFormato(rta)
+                if tipo != 6: # en cloze no hay parámetro de respuestas
+                    rta = preguntas[i]['respuesta']
+                    preguntas[i]['respuesta'] = self.CorrigeFormato(rta)
               
             self.enunciado = self.CorrigeFormato(enunciado)
             # Obtiene el número de argumentos del enunciado
@@ -106,7 +108,9 @@ class Ejercicio (object):
         Ajusta el enunciado con las respuestas,
         donde la primera es la respuesta correcta
         '''
-        s = '::%s_%i::\n'%(self.grupo,iPregunta+self.offsetIndice+1)
+        numPregunta = iPregunta+self.offsetIndice+1
+        numPregunta = str(numPregunta).zfill(self.numdigitos)
+        s = '::%s_%s::\n'%(self.grupo,numPregunta)
 
         if self.tipo in (0,4):
             
@@ -173,6 +177,9 @@ class Ejercicio (object):
         np = len(self.preguntas)
         if 0 < total < np:
             np = total
+        # Calcula el número de digitos para esta categoría
+        self.numdigitos = len(str(offsetIndice+np))
+        
         if self.tipo == 0:
             # Selección múltiple con única respuesta
             # Se arman los grupos para las opciones de respuestas
@@ -191,11 +198,11 @@ class Ejercicio (object):
                 enunciado = self.Enunciado(variante)
                 respuestas = [ preg['respuesta'] for preg in preguntas[i:i+o] ]
                 s += self.Respuesta(enunciado, respuestas,i)+'\n'
-        elif self.tipo in (1,2,3,4,5): #completar
+        elif self.tipo in (1,2,3,4,5,6): #completar
             for i in range(np):
                 variante = self.preguntas[i]['variante']
                 enunciado = self.Enunciado(variante)
-                respuestas = self.preguntas[i]['respuesta'] # lista de opciones
+                respuestas = self.preguntas[i].get('respuesta',None) # lista de opciones
                 puntos = self.preguntas[i].get( 'puntos', None)
                 feedback = self.preguntas[i].get('feedback',None)
                 s += self.Respuesta(enunciado, respuestas,i,feedback, puntos)+'\n'
@@ -271,7 +278,8 @@ class EjercicioXML(Ejercicio):
             2: "matching", 
             3: "truefalse",
             4: "multichoice",
-            5: "multichoice"
+            5: "multichoice",
+            6: "cloze",
         }
         
         nd = ET.Element('question')
@@ -281,7 +289,9 @@ class EjercicioXML(Ejercicio):
         # Crear el nombre basado en la categoría y el número de indice y offset
         nombre = ET.SubElement(nd, 'name')
         txtNombre = ET.SubElement(nombre,'text')
-        txtNombre.text = '%s_%i'%(self.grupo,iPregunta+self.offsetIndice+1)
+        numPregunta = iPregunta+self.offsetIndice+1
+        numPregunta = str(numPregunta).zfill(self.numdigitos)
+        txtNombre.text = '%s_%s'%(self.grupo,numPregunta)
         if self.tipo in (0,4,5):
             #print("*pregunta tipo:", self.tipo)
             # Se indica el enunciado
@@ -432,11 +442,20 @@ class EjercicioXML(Ejercicio):
                 rtaElement = self.AppendElement(nd, "answer", 
                     attribute={"fraction":f, "format":"moodle_auto_format"})
                 self.AppendElement(rtaElement, "text", value =  v)
-            
+        elif self.tipo == 6: # Cloze
+            qtext = self.AppendElement(nd, "questiontext", 
+                attribute = {"format":"html"} )
+            #self.AppendElement(qtext,'text', value=self.clozeContent(enunciado))
+            self.AppendElement(qtext,'text', value=enunciado)
         ## Transforma el elemento en texto
         return ET.tostring( nd, encoding = "unicode")
     
-    
+    def clozeContent(self, enunciado):
+        '''
+        Ajusta el enunciado de las preguntas tipo cloze para agregar al 
+        formato html
+        '''
+        return "<![CDATA[ "+enunciado+" ]]"
 
     
 
