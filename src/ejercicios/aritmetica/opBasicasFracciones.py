@@ -1,4 +1,4 @@
-from src import Ejercicio, TIPOS, Administrador
+from src import EjercicioXML, TIPOS, Administrador
 from random import  randint, shuffle
 from itertools import permutations, product, combinations
 
@@ -48,7 +48,7 @@ def pSumaRestaFraccionesCD(num_min=1, num_max=20, den_min=2, den_max=9):
     # mezcla las preguntas por si no se toman todas
     # para que no queden las que tienen denominador de un solo número primo
     shuffle(preguntas)
-    preguntas = Ejercicio( enunciado, preguntas, 'suma - resta fracciones común denominador', 
+    preguntas = EjercicioXML( enunciado, preguntas, 'suma - resta fracciones común denominador', 
         TIPOS['opciones específicas'])
     return preguntas
 
@@ -131,7 +131,7 @@ def pSumaRestaFraccionesSimplifica( max_num=20, max_v = 60):
             if numA <= max_v and numB <= max_v:
                 preguntas.append(p)
             i+=1
-    preguntas = Ejercicio( enunciado, preguntas, 
+    preguntas = EjercicioXML( enunciado, preguntas, 
         'suma-resta simplifica', TIPOS['opciones específicas'])
     return preguntas
     
@@ -208,7 +208,7 @@ def pSumaRestaFraccionesAmplifica( max_num=20, max_v = 60):
         p= { 'variante': [ s ], 'respuesta':[rOk, r1, r2, r3]}
         preguntas.append(p)
         i+=1
-    preguntas = Ejercicio( enunciado, preguntas, 
+    preguntas = EjercicioXML( enunciado, preguntas, 
         'suma-resta amplifica', TIPOS['opciones específicas'])
     return preguntas
 
@@ -256,7 +256,7 @@ def pMulDivFracciones():
         preguntas.append(p)
         i+=1
     
-    preguntas = Ejercicio( enunciado, preguntas, 
+    preguntas = EjercicioXML( enunciado, preguntas, 
         'multiplica-divide', TIPOS['opciones específicas'])
     return preguntas
 
@@ -300,6 +300,9 @@ def pAmplificaReduceFracciones(max_num=60):
         p= { 'variante': [ s ], 'respuesta':[rOk, r1]}
         preguntas.append(p)
         i+=1
-    preguntas = Ejercicio( enunciado, preguntas, 
+    preguntas = EjercicioXML( enunciado, preguntas, 
         'amplifica-reduce', TIPOS['opciones específicas'])
     return preguntas
+
+
+
