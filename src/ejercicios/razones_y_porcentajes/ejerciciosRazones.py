@@ -198,7 +198,7 @@ def pIdentificaRelacion():
         variables = rs[0][0].lower()
         rOk = "Regla de tres simple directa"
         r2 = "Regla de tres simple inversa"
-        if len(preguntas) > 5:
+        if len(preguntas) > 4:
             tmp = rOk
             rOk = r2
             r2 = tmp
