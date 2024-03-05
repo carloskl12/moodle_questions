@@ -1,4 +1,6 @@
 import re
+from random import choice
+
 class Estilo_Java:
     CL_PALABRAS_CLAVE = '#770'
     CL_TIPOS_DATO = '#11A'
@@ -41,17 +43,21 @@ class Estilo_Java:
           'tipos_dato': self.CL_TIPOS_DATO,
           'literal': self.CL_LITERAL,
           'identificador': self.CL_CODIGO,
-          'espacio':self.CL_CODIGO,
+          'espacio':self.CL_FONDO,
           'salto_de_linea': self.CL_CODIGO,
           'operador': self.CL_CODIGO,
         }
-        
+        color = dicTipos.get(tipo, self.CL_CODIGO)
         if tipo in ('codigo', 'operador', 'salto_de_linea', 'espacio', 'identificador'):
             valor = palabra 
             if valor == ' ':
-                valor = '&nbsp;'
+                palabra = choice('mnoau');
+                valor = f'<span style="color:{color}">{palabra}</span>'
             return valor
-        color = dicTipos.get(tipo, self.CL_CODIGO)
+
+        
+        
+        
         return f'<span style="color:{color}">{palabra}</span>'
 
 
