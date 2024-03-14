@@ -56,9 +56,10 @@ class Estilo_Java:
             return valor
 
         
-        
-        
-        return f'<span style="color:{color}">{palabra}</span>'
+        resultado = f'<span style="color:{color}">{palabra}</span>'
+        if tipo == 'comentario':
+            resultado += '<br>'
+        return resultado
 
 
 class TokenizadorJava:
