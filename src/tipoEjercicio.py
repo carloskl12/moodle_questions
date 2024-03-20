@@ -133,9 +133,29 @@ def emparejar( enunciadoP, valoresEmparejar , nombre_preg ):
         variantes.append(tabla)
          
         preguntas.append( {'variante':variantes } )
-    preguntas = EjercicioXML( enunciado, preguntas, nombre_preg, TIPOS['preguntas anidadas'])
+    preguntas = EjercicioXML( enunciado, preguntas, nombre_preg, 
+        TIPOS['preguntas anidadas'])
     return preguntas
 
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+def emparejarSimple( enunciadoP, valores , nombre_preg , maxPreg = 20 ):
+    '''
+    Se utiliza este tipo de pregunta para preguntas de emparejamiento simple
+    en donde se utilzan ecuaciones, ya que para las preguntas de emparejamiento
+    de Moodle no se puede utilizar ecuaciones en las dos partes de una misma 
+    pareja.
+    
+    valores: lista con las parejas
+    
+    '''
+    
+    n  = len(valores)
+    if n > 10:
+        raise Exception("Demaciadas opciones para emparejar, máximo 10")
+    
+    valoresEmparejar = [(valores, []) for i in range(20)]
+    
+    return emparejar( enunciadoP, valoresEmparejar , nombre_preg ):
 
 
 
