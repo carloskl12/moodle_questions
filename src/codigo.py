@@ -53,6 +53,8 @@ class Estilo_Java:
             if valor == ' ':
                 palabra = choice('mnoau');
                 valor = f'<span style="color:{color}">{palabra}</span>'
+            if valor == '<':
+                valor = '&lt;'
             return valor
 
         
