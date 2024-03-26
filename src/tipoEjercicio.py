@@ -155,7 +155,7 @@ def emparejarSimple( enunciadoP, valores , nombre_preg , maxPreg = 20 ):
     
     valoresEmparejar = [(valores, []) for i in range(20)]
     
-    return emparejar( enunciadoP, valoresEmparejar , nombre_preg ):
+    return emparejar( enunciadoP, valoresEmparejar , nombre_preg )
 
 
 
